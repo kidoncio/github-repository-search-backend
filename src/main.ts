@@ -23,7 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('/', app, document);
 
   app.enableCors({
-    origin: "*",
+    origin: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Content-Type, Accept",
   });
