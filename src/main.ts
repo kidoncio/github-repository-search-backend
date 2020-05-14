@@ -25,6 +25,7 @@ async function bootstrap() {
 
   const whitelist: string[] = [
     'http://localhost:3000',
+    'http://localhost:8080',
     'https://github-repository-search-backend.now.sh/',
   ];
   const corsOptions: CorsOptions = {
