@@ -19,9 +19,9 @@ export class SearchDto {
   readonly language: string;
 
   @ApiPropertyOptional({
-    description: 'Repository name',
+    description: 'Keyword',
   })
-  readonly name: string;
+  readonly keyword: string;
 
   @ApiPropertyOptional({
     description:

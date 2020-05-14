@@ -12,7 +12,7 @@ export class SearchService {
   async get(searchDto: SearchDto): Promise<SearchResponse> {
     let query = '';
 
-    if (searchDto.name) query += `${searchDto.name}`;
+    if (searchDto.keyword) query += `${searchDto.keyword}`;
 
     if (searchDto.language) query += `+language=${searchDto.language}`;
 
