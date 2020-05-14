@@ -21,7 +21,9 @@ export class SearchService {
 
       if (searchDto.order) query += `order=${searchDto.order}`;
 
-      if (searchDto.sort) query += `&sort=${searchDto.sort}`;
+      if (query) query += '&';
+
+      if (searchDto.sort) query += `sort=${searchDto.sort}`;
     }
 
     if (!query) query = `sort=${SortEnum.Stars}&order=${OrderEnum.Desc}`;
