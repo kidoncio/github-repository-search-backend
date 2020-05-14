@@ -1,6 +1,6 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { map } from 'rxjs/operators';
-import { SearchDto } from 'src/common/dto/search.dto';
+import { SearchDto, SortEnum, OrderEnum } from 'src/common/dto/search.dto';
 import { SearchResponse } from './interfaces/search-response.interface';
 
 @Injectable()
@@ -16,17 +16,15 @@ export class SearchService {
 
     if (searchDto.language) query += `+language=${searchDto.language}`;
 
-    if (searchDto.order) {
-      if (query) {
-        query += '&';
-      }
+    if (searchDto.order || searchDto.sort) {
+      if (query) query += '&';
 
-      query += `order=${searchDto.order}`;
+      if (searchDto.order) query += `order=${searchDto.order}`;
 
-      if (searchDto.sort) {
-        query += `&sort=${searchDto.sort}`;
-      }
+      if (searchDto.sort) query += `&sort=${searchDto.sort}`;
     }
+
+    if (!query) query = `sort=${SortEnum.Stars}&order=${OrderEnum.Desc}`;
 
     let apiUrl: string = this.url;
 
