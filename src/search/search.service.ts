@@ -1,6 +1,6 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { map } from 'rxjs/operators';
-import { SearchDto, SortEnum, OrderEnum } from 'src/common/dto/search.dto';
+import { SearchDto } from 'src/common/dto/search.dto';
 import { SearchResponse } from './interfaces/search-response.interface';
 
 @Injectable()
@@ -12,31 +12,28 @@ export class SearchService {
   async get(searchDto: SearchDto): Promise<SearchResponse> {
     let query = '';
 
-    if (searchDto.keyword) query += `${searchDto.keyword}`;
+    if (searchDto.keyword) query += searchDto.keyword;
 
     if (searchDto.language) query += `+language=${searchDto.language}`;
 
-    if (searchDto.order || searchDto.sort) {
-      if (query) query += '&';
+    if (searchDto.order)
+      query = this.addToQuery(query, 'order', searchDto.order);
 
-      if (searchDto.order) query += `order=${searchDto.order}`;
-
-      if (query) query += '&';
-
-      if (searchDto.sort) query += `sort=${searchDto.sort}`;
-    }
-
-    if (!query) query = `sort=${SortEnum.Stars}&order=${OrderEnum.Desc}`;
-
-    let apiUrl: string = this.url;
-
-    if (query) apiUrl += `?q=${query}`;
+    if (searchDto.sort) query = this.addToQuery(query, 'sort', searchDto.sort);
 
     const response: SearchResponse = await this.httpService
-      .get(apiUrl)
+      .get(`${this.url}?q=${query}`)
       .pipe(map(resp => resp.data))
       .toPromise();
 
     return response;
+  }
+
+  private addToQuery(query: string, key: string, value: string): string {
+    if (query) query += '&';
+
+    query += `${key}=${value}`;
+
+    return query;
   }
 }
